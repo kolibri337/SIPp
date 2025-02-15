@@ -12,8 +12,8 @@ if [ -z "$LOCAL_IP" ]; then
 fi
 
 # Параметры запуска sipP
-REMOTE_IP=${REMOTE_IP}  # IP адрес сервера
 REMOTE_PORT=${REMOTE_PORT:-"5060"}     # Порт на удалённом сервере
+LOCAL_PORT=${LOCAL_PORT:-"5060"}       # Порт на клиенте
 CALL_COUNT=${CALL_COUNT:-30}           # Количество вызовов
 CALL_INTERVAL=${CALL_INTERVAL:-30}     # Интервал между вызовами (секунды)
 # Минимальная и максимальная длительность вызова (минуты)
