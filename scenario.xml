@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<scenario name="Scenario for task">
+  <!-- Отправляем Invite к серверу -->
+  <send>
+    <![CDATA[
+      INVITE sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port]
+      From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+      To: sut <sip:[service]@[remote_ip]:[remote_port]>
+      Call-ID: [call_id]
+      Cseq: 1 INVITE
+      Contact: sip:sipp@[local_ip]:[local_port]
+      Max-Forwards: 80
+      Subject: Performance Test
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      0=- 1733228500868 1733228500868 IN IP[local_ip_type] [local_ip]
+      s=-
+      t=0 0
+      c=IN IP[media_ip_type] [media_ip]
+      m=audio 36102 RTP/AVP 8 18 96 97 98
+      a=rtpmap:8 PCMA/8000
+      a=rtpmap:18 G729/8000
+      a=fmtp:18 annexb=no
+      a=rtpmap:96 opus/48000/2
+      a=rtpmap:97 telephone-event/8000
+      a=rtpmap:98 telephone-event/48000
+      a=sendrecv
+      a=rtcp:36103
+      a=ptime:20
+    ]]>
+  </send>
+  <!-- Здесь ждём ответы от сервера:
+       100 Trying - запрос получен и обрабатывается
+       180 Ringing - вызов направлен вызываемому абоненту
+       200 OK - успешный запрос (вызов принят)
+   -->
+  <recv response="100" optional="true">
+  </recv>
+  <recv response="180" optional="true">
+  </recv>
+  <recv response="200">
+  </recv>
+  
+  <!-- Отправляем ACK в ответ на 200 OK, подтверждаем установление соединения -->
+  <send>
+    <![CDATA[
+      ACK sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port]
+      From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+      To: sut <sip:[service]@[remote_ip]:[remote_port]>[peer_tag_param]
+      Call-ID: [call_id]
+      Cseq: 1 ACK
+      Contact: sip:sipp@[local_ip]:[local_port]
+      Max-Forwards: 80
+      Subject: Performance Test
+      Content-Length: 0
+    ]]>
+  </send>
+  
+  <!-- Пауза, имитация разговора...-->
+  <pause milliseconds="[call_duration]"/>
+  
+  <!-- Отправляем BYE для завершения вызова -->
+  <send retrans="500">
+    <![CDATA[
+      BYE sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port]
+      From: sipp <sip:sipp@[local_ip]:[local_port]>;tag=[call_number]
+      To: sut <sip:[service]@[remote_ip]:[remote_port]>[peer_tag_param]
+      Call-ID: [call_id]
+      CSeq: 2 BYE
+      Contact: sip:sipp@[local_ip]:[local_port]
+      Max-Forwards: 80
+      Subject: Performance Test
+      Content-Length: 0
+    ]]>
+  </send>
+
+  <!-- Ждем 200 OK на BYE, подтверждаем завершение вызова -->
+  <recv response="200">
+  </recv>
+</scenario>
