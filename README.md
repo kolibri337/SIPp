@@ -36,9 +36,10 @@ docker build -t sipp-load-test .
 ### Пример запуска
 ```
 docker run \
+  --network host \
   -e REMOTE_IP=10.0.0.1 \
   -e REMOTE_PORT=5060 \
-  -e LOCAL_IP=10.0.0.2 \
+  -e LOCAL_IP=$(hostname -I | awk '{print $1}') \
   -e LOCAL_PORT=5060 \
   -e CALL_COUNT=50 \
   -e CALL_INTERVAL=10 \
