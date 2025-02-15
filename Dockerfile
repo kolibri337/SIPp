@@ -17,7 +17,7 @@ RUN apt-get update && \
 RUN wget https://github.com/SIPp/sipp/releases/download/v3.7.3/sipp-3.7.3.tar.gz && \
     tar -xvzf sipp-3.7.3.tar.gz && \
     cd sipp-3.7.0 && \
-    cmake . -DUSE_GSL=1 -DUSE_PCAP=1 \
+    cmake . -DUSE_SSL=1 -DUSE_PCAP=1 -DUSE_SCTP=1 -DUSE_GSL=1 \ 
     make && \
     make install
 
