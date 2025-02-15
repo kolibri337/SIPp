@@ -1,10 +1,19 @@
 #!/bin/bash
 
+# Проверка обязательных переменных окружения
+if [ -z "$REMOTE_IP" ]; then
+  echo "Ошибка: переменная окружения REMOTE_IP не задана."
+  exit 1
+fi
+
+if [ -z "$LOCAL_IP" ]; then
+  echo "Ошибка: переменная окружения LOCAL_IP не задана."
+  exit 1
+fi
+
 # Параметры запуска sipP
-REMOTE_IP=${REMOTE_IP:-"192.168.1.1"}  # IP адрес сервера
+REMOTE_IP=${REMOTE_IP}  # IP адрес сервера
 REMOTE_PORT=${REMOTE_PORT:-"5060"}     # Порт на удалённом сервере
-LOCAL_IP=${LOCAL_IP:-"192.168.1.2"}    # IP адрес клиента
-LOCAL_PORT=${LOCAL_PORT:-"5060"}       # Порт на клиенте
 CALL_COUNT=${CALL_COUNT:-30}           # Количество вызовов
 CALL_INTERVAL=${CALL_INTERVAL:-30}     # Интервал между вызовами (секунды)
 # Минимальная и максимальная длительность вызова (минуты)

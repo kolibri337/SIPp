@@ -41,4 +41,4 @@ WORKDIR /app
 USER sippuser
 
 # Укажем ENTRYPOINT
-ENTRYPOINT ["./run_calls.sh"]
+CMD ["./run_calls.sh"]
