@@ -11,6 +11,7 @@ RUN apt-get update && \
     libssl-dev \
     libpcap-dev \
     python3 \
+    cmake \
     && rm -rf /var/lib/apt/lists/*
 
 # Скачиваем и устанавливаем SIPp
