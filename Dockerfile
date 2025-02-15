@@ -25,7 +25,7 @@ RUN wget https://github.com/SIPp/sipp/releases/download/v3.7.3/sipp-3.7.3.tar.gz
 RUN useradd -m sippuser
 
 # Копируем сценарий и скрипт
-COPY basic_call.xml /app/basic_call.xml
+COPY scenario.xml /app/scenario.xml
 COPY run_calls.sh /app/run_calls.sh
 
 # Устанавливаем владельца файлов
