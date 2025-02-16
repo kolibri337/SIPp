@@ -17,10 +17,11 @@ RUN apt-get update && \
 # Скачиваем и устанавливаем SIPp
 RUN wget https://github.com/SIPp/sipp/releases/download/v3.7.3/sipp-3.7.3.tar.gz && \
     tar -xvzf sipp-3.7.3.tar.gz && \
+    rm sipp-3.7.3.tar.gz && \
     cd sipp-3.7.3 && \
     cmake . -DUSE_SSL=1 -DUSE_PCAP=1 && \ 
     make && \
-    make install
+    make install 
 
 # Создаем непривилегированного пользователя
 RUN useradd -m sippuser
