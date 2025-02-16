@@ -26,23 +26,25 @@ RANGE=$((MAX_DURATION_MS - MIN_DURATION_MS))
 # Создаем копию оригинального scenario.xml
 cp scenario.xml scenario_template.xml
 
+# Заменяем плейсхолдеры в scenario_template.xml
+sed -i "s/\[remote_ip\]/$REMOTE_IP/g" scenario_template.xml
+sed -i "s/\[remote_port\]/$REMOTE_PORT/g" scenario_template.xml
+sed -i "s/\[local_ip\]/$LOCAL_IP/g" scenario_template.xml
+sed -i "s/\[local_port\]/$LOCAL_PORT/g" scenario_template.xml
+
 for ((i=1; i<=CALL_COUNT; i++))
 do
   # Генерация случайной длительности вызова
   CALL_DURATION=$(( (RANDOM % RANGE) + MIN_DURATION_MS ))
 
-  # Восстанавливаем оригинальный scenario.xml из копии
+  # Восстанавливаем scenario.xml из копии
   cp scenario_template.xml scenario.xml
 
-  # Заменяем плейсхолдеры в scenario.xml
-  sed -i "s/\[REMOTE_IP\]/$REMOTE_IP/g" scenario.xml
-  sed -i "s/\[REMOTE_PORT\]/$REMOTE_PORT/g" scenario.xml
-  sed -i "s/\[LOCAL_IP\]/$LOCAL_IP/g" scenario.xml
-  sed -i "s/\[LOCAL_PORT\]/$LOCAL_PORT/g" scenario.xml
+  # Выставляем продолжительность звонка
   sed -i "s/\[call_duration\]/$CALL_DURATION/g" scenario.xml
 
   # Запускаем SIPp с указанными параметрами
-  sipp -sf scenario.xml -i $LOCAL_IP -p $LOCAL_PORT -m 1 -d $CALL_DURATION $REMOTE_IP:$REMOTE_PORT
+  sipp -sf scenario.xml -i $LOCAL_IP -p $LOCAL_PORT -m 1 $REMOTE_IP:$REMOTE_PORT
 
   # Пауза между вызовами
   if [ $i -lt $CALL_COUNT ]; then
