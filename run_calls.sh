@@ -26,12 +26,6 @@ RANGE=$((MAX_DURATION_MS - MIN_DURATION_MS))
 # Создаем копию оригинального scenario.xml
 cp scenario.xml scenario_template.xml
 
-# Заменяем плейсхолдеры в scenario_template.xml
-sed -i "s/\[remote_ip\]/$REMOTE_IP/g" scenario_template.xml
-sed -i "s/\[remote_port\]/$REMOTE_PORT/g" scenario_template.xml
-sed -i "s/\[local_ip\]/$LOCAL_IP/g" scenario_template.xml
-sed -i "s/\[local_port\]/$LOCAL_PORT/g" scenario_template.xml
-
 for ((i=1; i<=CALL_COUNT; i++))
 do
   # Генерация случайной длительности вызова
